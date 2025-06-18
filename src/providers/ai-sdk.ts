@@ -19,8 +19,11 @@ export class AISDKProvider implements AIProvider {
     schema,
   }: InferenceConfig): Promise<any> {
     const llm = this.createAiFunc({ apiKey: config.llmApiKey });
-    const { object, usage } = await generateObject({
-      model: llm(this.modelName),
+    const model = llm(this.modelName);
+    info(`Using model: ${model.provider} ${model.modelId}`);
+
+    const { object, usage,  } = await generateObject({
+      model,
       prompt,
       temperature: temperature || 0,
       system,

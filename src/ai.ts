@@ -5,6 +5,7 @@ import { z } from "zod";
 import config from "./config";
 import { AISDKProvider } from "./providers/ai-sdk";
 import { SAPAIProvider } from "./providers/sapaicore";
+import { info } from "@actions/core";
 
 export enum AIProviderType {
   AI_SDK = "ai-sdk",
@@ -215,8 +216,11 @@ export async function runPrompt({
     );
   }
 
+  info(`Using LLM model: ${modelConfig.name} from provider: ${providerType}`);
+
   // Get the appropriate provider for this model
   const provider = AIProviderFactory.getProvider(providerType, modelConfig);
+
 
   // Run the inference using the provider
   return await provider.runInference({
